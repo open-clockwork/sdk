@@ -36,10 +36,10 @@ class ClockworkProvider {
     connection: Connection,
     opts: ConfirmOptions = anchor.AnchorProvider.defaultOptions()
   ) {
+    // @ts-ignore
     this.anchorProvider = new anchor.AnchorProvider(connection, wallet, opts);
     this.threadProgram = new anchor.Program<ThreadProgram>(
       ThreadProgramIdl as anchor.Idl as ThreadProgram,
-      ThreadProgramIdl.metadata.address,
       this.anchorProvider
     );
   }

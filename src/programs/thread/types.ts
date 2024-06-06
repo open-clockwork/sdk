@@ -1,1693 +1,1321 @@
+/**
+ * Program IDL in camelCase format in order to be used in JS/TS.
+ *
+ * Note that this is only a type helper and is not the actual IDL. The original
+ * IDL can be found at `target/idl/thread_program.json`.
+ */
 export type ThreadProgram = {
-  version: "2.0.16";
-  name: "thread_program";
-  docs: ["Program for creating transaction threads on Solana."];
-  instructions: [
+  "address": "5mWnTLUXiCtNbyTrniAEoPwuXVzQPM7VYr8yYaMaNhf2",
+  "name": "threadProgram",
+  "version": "2.0.20",
+  "spec": "0.1.0",
+  "description": "Clockwork thread program",
+  "repository": "https://github.com/clockwork-xyz/clockwork",
+  "metadata": {
+    "name": "threadProgram",
+    "version": "2.0.20",
+    "spec": "0.1.0",
+    "description": "Clockwork thread program",
+    "repository": "https://github.com/clockwork-xyz/clockwork"
+  },
+  "docs": [
+    "Program for creating transaction threads on Solana."
+  ],
+  "instructions": [
     {
-      name: "getCrateInfo";
-      docs: [
+      "name": "getCrateInfo",
+      "docs": [
         "Return the crate information via `sol_set_return_data/sol_get_return_data`"
-      ];
-      accounts: [
+      ],
+      "discriminator": [
+        59,
+        15,
+        145,
+        204,
+        119,
+        170,
+        30,
+        158
+      ],
+      "accounts": [
         {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
+          "name": "systemProgram"
         }
-      ];
-      args: [];
-      returns: {
-        defined: "CrateInfo";
-      };
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "crateInfo"
+        }
+      }
     },
     {
-      name: "threadExec";
-      docs: ["Executes the next instruction on thread."];
-      accounts: [
+      "name": "threadCreate",
+      "docs": [
+        "Creates a new transaction thread."
+      ],
+      "discriminator": [
+        54,
+        1,
+        238,
+        224,
+        71,
+        244,
+        252,
+        173
+      ],
+      "accounts": [
         {
-          name: "fee";
-          isMut: true;
-          isSigner: false;
-          docs: ["The worker's fee account."];
+          "name": "authority",
+          "docs": [
+            "The authority (owner) of the thread."
+          ],
+          "signer": true
         },
         {
-          name: "pool";
-          isMut: false;
-          isSigner: false;
-          docs: ["The active worker pool."];
+          "name": "payer",
+          "docs": [
+            "The payer for account initializations."
+          ],
+          "writable": true,
+          "signer": true
         },
         {
-          name: "signatory";
-          isMut: true;
-          isSigner: true;
-          docs: ["The signatory."];
+          "name": "systemProgram",
+          "docs": [
+            "The Solana system program."
+          ]
         },
         {
-          name: "thread";
-          isMut: true;
-          isSigner: false;
-          docs: ["The thread to execute."];
-        },
-        {
-          name: "worker";
-          isMut: false;
-          isSigner: false;
-          docs: ["The worker."];
+          "name": "thread",
+          "docs": [
+            "The thread to be created."
+          ],
+          "writable": true
         }
-      ];
-      args: [];
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "id",
+          "type": "bytes"
+        },
+        {
+          "name": "instructions",
+          "type": {
+            "vec": {
+              "defined": {
+                "name": "serializableInstruction"
+              }
+            }
+          }
+        },
+        {
+          "name": "trigger",
+          "type": {
+            "defined": {
+              "name": "trigger"
+            }
+          }
+        }
+      ]
     },
     {
-      name: "threadCreate";
-      docs: ["Creates a new transaction thread."];
-      accounts: [
-        {
-          name: "authority";
-          isMut: false;
-          isSigner: true;
-          docs: ["The authority (owner) of the thread."];
-        },
-        {
-          name: "payer";
-          isMut: true;
-          isSigner: true;
-          docs: ["The payer for account initializations."];
-        },
-        {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
-          docs: ["The Solana system program."];
-        },
-        {
-          name: "thread";
-          isMut: true;
-          isSigner: false;
-          docs: ["The thread to be created."];
-        }
-      ];
-      args: [
-        {
-          name: "amount";
-          type: "u64";
-        },
-        {
-          name: "id";
-          type: "bytes";
-        },
-        {
-          name: "instructions";
-          type: {
-            vec: {
-              defined: "SerializableInstruction";
-            };
-          };
-        },
-        {
-          name: "trigger";
-          type: {
-            defined: "Trigger";
-          };
-        }
-      ];
-    },
-    {
-      name: "threadDelete";
-      docs: [
+      "name": "threadDelete",
+      "docs": [
         "Closes an existing thread account and returns the lamports to the owner."
-      ];
-      accounts: [
+      ],
+      "discriminator": [
+        146,
+        6,
+        95,
+        17,
+        35,
+        98,
+        44,
+        140
+      ],
+      "accounts": [
         {
-          name: "authority";
-          isMut: false;
-          isSigner: true;
-          docs: ["The authority (owner) of the thread."];
+          "name": "authority",
+          "docs": [
+            "The authority (owner) of the thread."
+          ],
+          "signer": true
         },
         {
-          name: "closeTo";
-          isMut: true;
-          isSigner: false;
-          docs: ["The address to return the data rent lamports to."];
+          "name": "closeTo",
+          "docs": [
+            "The address to return the data rent lamports to."
+          ],
+          "writable": true
         },
         {
-          name: "thread";
-          isMut: true;
-          isSigner: false;
-          docs: ["The thread to be delete."];
+          "name": "thread",
+          "docs": [
+            "The thread to be delete."
+          ],
+          "writable": true
         }
-      ];
-      args: [];
+      ],
+      "args": []
     },
     {
-      name: "threadInstructionAdd";
-      docs: ["Appends a new instruction to the thread's instruction set."];
-      accounts: [
+      "name": "threadExec",
+      "docs": [
+        "Executes the next instruction on thread."
+      ],
+      "discriminator": [
+        141,
+        79,
+        219,
+        140,
+        125,
+        246,
+        162,
+        160
+      ],
+      "accounts": [
         {
-          name: "authority";
-          isMut: true;
-          isSigner: true;
-          docs: ["The authority (owner) of the thread."];
+          "name": "fee",
+          "docs": [
+            "The worker's fee account."
+          ],
+          "writable": true
         },
         {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
-          docs: ["The Solana system program"];
+          "name": "pool",
+          "docs": [
+            "The active worker pool."
+          ]
         },
         {
-          name: "thread";
-          isMut: true;
-          isSigner: false;
-          docs: ["The thread to be paused."];
-        }
-      ];
-      args: [
+          "name": "signatory",
+          "docs": [
+            "The signatory."
+          ],
+          "writable": true,
+          "signer": true
+        },
         {
-          name: "instruction";
-          type: {
-            defined: "SerializableInstruction";
-          };
+          "name": "thread",
+          "docs": [
+            "The thread to execute."
+          ],
+          "writable": true
+        },
+        {
+          "name": "worker",
+          "docs": [
+            "The worker."
+          ]
         }
-      ];
+      ],
+      "args": []
     },
     {
-      name: "threadInstructionRemove";
-      docs: [
+      "name": "threadInstructionAdd",
+      "docs": [
+        "Appends a new instruction to the thread's instruction set."
+      ],
+      "discriminator": [
+        105,
+        117,
+        243,
+        157,
+        61,
+        226,
+        87,
+        201
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "docs": [
+            "The authority (owner) of the thread."
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "systemProgram",
+          "docs": [
+            "The Solana system program"
+          ]
+        },
+        {
+          "name": "thread",
+          "docs": [
+            "The thread to be paused."
+          ],
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "instruction",
+          "type": {
+            "defined": {
+              "name": "serializableInstruction"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "threadInstructionRemove",
+      "docs": [
         "Removes an instruction to the thread's instruction set at the provied index."
-      ];
-      accounts: [
+      ],
+      "discriminator": [
+        87,
+        114,
+        175,
+        98,
+        217,
+        155,
+        188,
+        31
+      ],
+      "accounts": [
         {
-          name: "authority";
-          isMut: false;
-          isSigner: true;
-          docs: ["The authority (owner) of the thread."];
+          "name": "authority",
+          "docs": [
+            "The authority (owner) of the thread."
+          ],
+          "signer": true
         },
         {
-          name: "thread";
-          isMut: true;
-          isSigner: false;
-          docs: ["The thread to be edited."];
+          "name": "thread",
+          "docs": [
+            "The thread to be edited."
+          ],
+          "writable": true
         }
-      ];
-      args: [
+      ],
+      "args": [
         {
-          name: "index";
-          type: "u64";
+          "name": "index",
+          "type": "u64"
         }
-      ];
+      ]
     },
     {
-      name: "threadKickoff";
-      docs: ["Kicks off a thread if its trigger condition is active."];
-      accounts: [
+      "name": "threadKickoff",
+      "docs": [
+        "Kicks off a thread if its trigger condition is active."
+      ],
+      "discriminator": [
+        34,
+        80,
+        5,
+        128,
+        197,
+        187,
+        14,
+        20
+      ],
+      "accounts": [
         {
-          name: "signatory";
-          isMut: true;
-          isSigner: true;
-          docs: ["The signatory."];
+          "name": "signatory",
+          "docs": [
+            "The signatory."
+          ],
+          "writable": true,
+          "signer": true
         },
         {
-          name: "thread";
-          isMut: true;
-          isSigner: false;
-          docs: ["The thread to kickoff."];
+          "name": "thread",
+          "docs": [
+            "The thread to kickoff."
+          ],
+          "writable": true
         },
         {
-          name: "worker";
-          isMut: false;
-          isSigner: false;
-          docs: ["The worker."];
+          "name": "worker",
+          "docs": [
+            "The worker."
+          ]
         }
-      ];
-      args: [];
+      ],
+      "args": []
     },
     {
-      name: "threadPause";
-      docs: ["Pauses an active thread."];
-      accounts: [
+      "name": "threadPause",
+      "docs": [
+        "Pauses an active thread."
+      ],
+      "discriminator": [
+        197,
+        134,
+        59,
+        33,
+        129,
+        130,
+        102,
+        246
+      ],
+      "accounts": [
         {
-          name: "authority";
-          isMut: false;
-          isSigner: true;
-          docs: ["The authority (owner) of the thread."];
+          "name": "authority",
+          "docs": [
+            "The authority (owner) of the thread."
+          ],
+          "signer": true
         },
         {
-          name: "thread";
-          isMut: true;
-          isSigner: false;
-          docs: ["The thread to be paused."];
+          "name": "thread",
+          "docs": [
+            "The thread to be paused."
+          ],
+          "writable": true
         }
-      ];
-      args: [];
+      ],
+      "args": []
     },
     {
-      name: "threadResume";
-      docs: ["Resumes a paused thread."];
-      accounts: [
+      "name": "threadReset",
+      "docs": [
+        "Resets a thread's next instruction."
+      ],
+      "discriminator": [
+        187,
+        185,
+        155,
+        37,
+        161,
+        74,
+        117,
+        0
+      ],
+      "accounts": [
         {
-          name: "authority";
-          isMut: false;
-          isSigner: true;
-          docs: ["The authority (owner) of the thread."];
+          "name": "authority",
+          "docs": [
+            "The authority (owner) of the thread."
+          ],
+          "signer": true
         },
         {
-          name: "thread";
-          isMut: true;
-          isSigner: false;
-          docs: ["The thread to be resumed."];
+          "name": "thread",
+          "docs": [
+            "The thread to be paused."
+          ],
+          "writable": true
         }
-      ];
-      args: [];
+      ],
+      "args": []
     },
     {
-      name: "threadReset";
-      docs: ["Resets a thread's next instruction."];
-      accounts: [
+      "name": "threadResume",
+      "docs": [
+        "Resumes a paused thread."
+      ],
+      "discriminator": [
+        142,
+        165,
+        20,
+        133,
+        151,
+        201,
+        32,
+        183
+      ],
+      "accounts": [
         {
-          name: "authority";
-          isMut: false;
-          isSigner: true;
-          docs: ["The authority (owner) of the thread."];
+          "name": "authority",
+          "docs": [
+            "The authority (owner) of the thread."
+          ],
+          "signer": true
         },
         {
-          name: "thread";
-          isMut: true;
-          isSigner: false;
-          docs: ["The thread to be paused."];
+          "name": "thread",
+          "docs": [
+            "The thread to be resumed."
+          ],
+          "writable": true
         }
-      ];
-      args: [];
+      ],
+      "args": []
     },
     {
-      name: "threadUpdate";
-      docs: ["Allows an owner to update the mutable properties of a thread."];
-      accounts: [
+      "name": "threadUpdate",
+      "docs": [
+        "Allows an owner to update the mutable properties of a thread."
+      ],
+      "discriminator": [
+        62,
+        117,
+        199,
+        78,
+        253,
+        104,
+        20,
+        52
+      ],
+      "accounts": [
         {
-          name: "authority";
-          isMut: true;
-          isSigner: true;
-          docs: ["The authority (owner) of the thread."];
+          "name": "authority",
+          "docs": [
+            "The authority (owner) of the thread."
+          ],
+          "writable": true,
+          "signer": true
         },
         {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
-          docs: ["The Solana system program"];
+          "name": "systemProgram",
+          "docs": [
+            "The Solana system program"
+          ]
         },
         {
-          name: "thread";
-          isMut: true;
-          isSigner: false;
-          docs: ["The thread to be updated."];
+          "name": "thread",
+          "docs": [
+            "The thread to be updated."
+          ],
+          "writable": true
         }
-      ];
-      args: [
+      ],
+      "args": [
         {
-          name: "settings";
-          type: {
-            defined: "ThreadSettings";
-          };
-        }
-      ];
-    },
-    {
-      name: "threadWithdraw";
-      docs: ["Allows an owner to withdraw from a thread's lamport balance."];
-      accounts: [
-        {
-          name: "authority";
-          isMut: false;
-          isSigner: true;
-          docs: ["The authority (owner) of the thread."];
-        },
-        {
-          name: "payTo";
-          isMut: true;
-          isSigner: false;
-          docs: ["The account to withdraw lamports to."];
-        },
-        {
-          name: "thread";
-          isMut: true;
-          isSigner: false;
-          docs: ["The thread to be."];
-        }
-      ];
-      args: [
-        {
-          name: "amount";
-          type: "u64";
-        }
-      ];
-    }
-  ];
-  accounts: [
-    {
-      name: "thread";
-      docs: ["Tracks the current state of a transaction thread on Solana."];
-      type: {
-        kind: "struct";
-        fields: [
-          {
-            name: "authority";
-            docs: ["The owner of this thread."];
-            type: "publicKey";
-          },
-          {
-            name: "bump";
-            docs: ["The bump, used for PDA validation."];
-            type: "u8";
-          },
-          {
-            name: "createdAt";
-            docs: ["The cluster clock at the moment the thread was created."];
-            type: {
-              defined: "ClockData";
-            };
-          },
-          {
-            name: "execContext";
-            docs: ["The context of the thread's current execution state."];
-            type: {
-              option: {
-                defined: "ExecContext";
-              };
-            };
-          },
-          {
-            name: "fee";
-            docs: [
-              "The number of lamports to payout to workers per execution."
-            ];
-            type: "u64";
-          },
-          {
-            name: "id";
-            docs: ["The id of the thread, given by the authority."];
-            type: "bytes";
-          },
-          {
-            name: "instructions";
-            docs: ["The instructions to be executed."];
-            type: {
-              vec: {
-                defined: "SerializableInstruction";
-              };
-            };
-          },
-          {
-            name: "name";
-            docs: ["The name of the thread."];
-            type: "string";
-          },
-          {
-            name: "nextInstruction";
-            docs: ["The next instruction to be executed."];
-            type: {
-              option: {
-                defined: "SerializableInstruction";
-              };
-            };
-          },
-          {
-            name: "paused";
-            docs: ["Whether or not the thread is currently paused."];
-            type: "bool";
-          },
-          {
-            name: "rateLimit";
-            docs: ["The maximum number of execs allowed per slot."];
-            type: "u64";
-          },
-          {
-            name: "trigger";
-            docs: ["The triggering event to kickoff a thread."];
-            type: {
-              defined: "Trigger";
-            };
+          "name": "settings",
+          "type": {
+            "defined": {
+              "name": "threadSettings"
+            }
           }
-        ];
-      };
-    }
-  ];
-  types: [
-    {
-      name: "Trigger";
-      docs: ["Trigger"];
-      type: {
-        kind: "enum";
-        variants: [
-          {
-            name: "Account";
-            fields: [
-              {
-                name: "address";
-                docs: ["The address of the account to monitor"];
-                type: "publicKey";
-              },
-              {
-                name: "offset";
-                docs: ["The byte offset of the account data to monitor"];
-                type: "u64";
-              },
-              {
-                name: "size";
-                docs: [
-                  "The size of the byte slice to monitor (must be less than 1kb)"
-                ];
-                type: "u64";
-              }
-            ];
-          },
-          {
-            name: "Cron";
-            fields: [
-              {
-                name: "schedule";
-                docs: [
-                  "The schedule in cron syntax. Value must be parsable by the `clockwork_cron` package"
-                ];
-                type: "string";
-              },
-              {
-                name: "skippable";
-                docs: [
-                  "Boolean value indicating whether triggering moments may be skipped if they are missed (e.g. due to network downtime) If false, any missed triggering moments will simply be executed as soon as the network comes back online."
-                ];
-                type: "bool";
-              }
-            ];
-          },
-          {
-            name: "Now";
-          },
-          {
-            name: "Slot";
-            fields: [
-              {
-                name: "slot";
-                docs: ["Slot"];
-                type: "u64";
-              }
-            ];
-          },
-          {
-            name: "Epoch";
-            fields: [
-              {
-                name: "epoch";
-                docs: ["Epoch"];
-                type: "u64";
-              }
-            ];
-          },
-          {
-            name: "Timestamp";
-            fields: [
-              {
-                name: "unixTs";
-                docs: ["Unix timestamp"];
-                type: "i64";
-              }
-            ];
-          },
-          {
-            name: "Pyth";
-            fields: [
-              {
-                name: "priceFeed";
-                docs: ["The address of the price feed to monitor."];
-                type: "publicKey";
-              },
-              {
-                name: "equality";
-                docs: ["The equality operator (gte or lte) used to compare prices."];
-                type: { defined: "Equality" }
-              },
-              {
-                name: "limit";
-                docs: ["The limit price to compare the Pyth feed to."];
-                type: "i64";
-              },
-            ];
-          }
-        ];
-      };
+        }
+      ]
     },
     {
-      name: "SerializableInstruction";
-      docs: ["Serializable Instruction"];
-      type: {
-        kind: "struct";
-        fields: [
+      "name": "threadWithdraw",
+      "docs": [
+        "Allows an owner to withdraw from a thread's lamport balance."
+      ],
+      "discriminator": [
+        210,
+        190,
+        114,
+        194,
+        186,
+        179,
+        184,
+        176
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "docs": [
+            "The authority (owner) of the thread."
+          ],
+          "signer": true
+        },
+        {
+          "name": "payTo",
+          "docs": [
+            "The account to withdraw lamports to."
+          ],
+          "writable": true
+        },
+        {
+          "name": "thread",
+          "docs": [
+            "The thread to be."
+          ],
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "fee",
+      "discriminator": [
+        24,
+        55,
+        150,
+        250,
+        168,
+        27,
+        101,
+        178
+      ]
+    },
+    {
+      "name": "pool",
+      "discriminator": [
+        241,
+        154,
+        109,
+        4,
+        17,
+        177,
+        109,
+        188
+      ]
+    },
+    {
+      "name": "thread",
+      "discriminator": [
+        186,
+        27,
+        154,
+        111,
+        51,
+        36,
+        159,
+        90
+      ]
+    },
+    {
+      "name": "worker",
+      "discriminator": [
+        224,
+        158,
+        97,
+        5,
+        224,
+        241,
+        67,
+        146
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "invalidThreadResponse",
+      "msg": "The exec response could not be parsed"
+    },
+    {
+      "code": 6001,
+      "name": "invalidThreadState",
+      "msg": "The thread is in an invalid state"
+    },
+    {
+      "code": 6002,
+      "name": "invalidTriggerVariant",
+      "msg": "The trigger variant cannot be changed"
+    },
+    {
+      "code": 6003,
+      "name": "triggerConditionFailed",
+      "msg": "The trigger condition has not been activated"
+    },
+    {
+      "code": 6004,
+      "name": "threadBusy",
+      "msg": "This operation cannot be processes because the thread is currently busy"
+    },
+    {
+      "code": 6005,
+      "name": "threadPaused",
+      "msg": "The thread is currently paused"
+    },
+    {
+      "code": 6006,
+      "name": "rateLimitExeceeded",
+      "msg": "The thread's rate limit has been reached"
+    },
+    {
+      "code": 6007,
+      "name": "maxRateLimitExceeded",
+      "msg": "Thread rate limits cannot exceed the maximum allowed value"
+    },
+    {
+      "code": 6008,
+      "name": "unauthorizedWrite",
+      "msg": "Inner instruction attempted to write to an unauthorized address"
+    },
+    {
+      "code": 6009,
+      "name": "withdrawalTooLarge",
+      "msg": "Withdrawing this amount would leave the thread with less than the minimum required SOL for rent exemption"
+    }
+  ],
+  "types": [
+    {
+      "name": "clockData",
+      "docs": [
+        "The clock object, representing a specific moment in time recorded by a Solana cluster."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "programId";
-            docs: [
+            "name": "slot",
+            "docs": [
+              "The current slot."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "epoch",
+            "docs": [
+              "The bank epoch."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "unixTimestamp",
+            "docs": [
+              "The current unix timestamp."
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "crateInfo",
+      "docs": [
+        "Crate build information"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "spec",
+            "docs": [
+              "The link to the crate spec"
+            ],
+            "type": "string"
+          },
+          {
+            "name": "blob",
+            "docs": [
+              "Arbitrary blob that can be set by developers"
+            ],
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "equality",
+      "docs": [
+        "Operators for describing how to compare two values to one another."
+      ],
+      "repr": {
+        "kind": "rust"
+      },
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "greaterThanOrEqual"
+          },
+          {
+            "name": "lessThanOrEqual"
+          }
+        ]
+      }
+    },
+    {
+      "name": "execContext",
+      "docs": [
+        "The execution context of a particular transaction thread."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "execIndex",
+            "docs": [
+              "Index of the next instruction to be executed."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "execsSinceReimbursement",
+            "docs": [
+              "Number of execs since the last tx reimbursement.",
+              "To be deprecated in v3 since we now reimburse for every transaction."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "execsSinceSlot",
+            "docs": [
+              "Number of execs in this slot."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "lastExecAt",
+            "docs": [
+              "Slot of the last exec"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "triggerContext",
+            "docs": [
+              "Context for the triggering condition"
+            ],
+            "type": {
+              "defined": {
+                "name": "triggerContext"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "fee",
+      "docs": [
+        "Escrows the lamport balance owed to a particular worker."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "distributableBalance",
+            "docs": [
+              "The number of lamports that are distributable for this epoch period."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "worker",
+            "docs": [
+              "The worker who received the fees."
+            ],
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "pool",
+      "docs": [
+        "* Pool"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u64"
+          },
+          {
+            "name": "size",
+            "type": "u32"
+          },
+          {
+            "name": "workers",
+            "type": {
+              "vec": "pubkey"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "serializableAccount",
+      "docs": [
+        "Account metadata needed to execute an instruction on Solana."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "pubkey",
+            "docs": [
+              "An account's public key"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "isSigner",
+            "docs": [
+              "True if an Instruction requires a Transaction signature matching `pubkey`."
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "isWritable",
+            "docs": [
+              "True if the `pubkey` can be loaded as a read-write account."
+            ],
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "serializableInstruction",
+      "docs": [
+        "The data needed execute an instruction on Solana."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "programId",
+            "docs": [
               "Pubkey of the instruction processor that executes this instruction"
-            ];
-            type: "publicKey";
+            ],
+            "type": "pubkey"
           },
           {
-            name: "accounts";
-            docs: [
+            "name": "accounts",
+            "docs": [
               "Metadata for what accounts should be passed to the instruction processor"
-            ];
-            type: {
-              vec: { defined: "SerializableAccount" };
-            };
+            ],
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "serializableAccount"
+                }
+              }
+            }
           },
           {
-            name: "data";
-            docs: ["Opaque data passed to the instruction processor"];
-            type: "bytes";
+            "name": "data",
+            "docs": [
+              "Opaque data passed to the instruction processor"
+            ],
+            "type": "bytes"
           }
-        ];
-      };
+        ]
+      }
     },
     {
-      name: "SerializableAccount";
-      docs: ["Serializable Account"];
-      type: {
-        kind: "struct";
-        fields: [
+      "name": "thread",
+      "docs": [
+        "Tracks the current state of a transaction thread on Solana."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "pubkey";
-            docs: ["An account's public key"];
-            type: "publicKey";
+            "name": "authority",
+            "docs": [
+              "The owner of this thread."
+            ],
+            "type": "pubkey"
           },
           {
-            name: "isSigner";
-            docs: [
-              "True if an Instruction requires a Transaction signature matching `pubkey`"
-            ];
-            type: "bool";
+            "name": "bump",
+            "docs": [
+              "The bump, used for PDA validation."
+            ],
+            "type": "u8"
           },
           {
-            name: "isWritable";
-            docs: [
-              "True if the `pubkey` can be loaded as a read-write account"
-            ];
-            type: "bool";
+            "name": "createdAt",
+            "docs": [
+              "The cluster clock at the moment the thread was created."
+            ],
+            "type": {
+              "defined": {
+                "name": "clockData"
+              }
+            }
+          },
+          {
+            "name": "execContext",
+            "docs": [
+              "The context of the thread's current execution state."
+            ],
+            "type": {
+              "option": {
+                "defined": {
+                  "name": "execContext"
+                }
+              }
+            }
+          },
+          {
+            "name": "fee",
+            "docs": [
+              "The number of lamports to payout to workers per execution."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "id",
+            "docs": [
+              "The id of the thread, given by the authority."
+            ],
+            "type": "bytes"
+          },
+          {
+            "name": "instructions",
+            "docs": [
+              "The instructions to be executed."
+            ],
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "serializableInstruction"
+                }
+              }
+            }
+          },
+          {
+            "name": "name",
+            "docs": [
+              "The name of the thread."
+            ],
+            "type": "string"
+          },
+          {
+            "name": "nextInstruction",
+            "docs": [
+              "The next instruction to be executed."
+            ],
+            "type": {
+              "option": {
+                "defined": {
+                  "name": "serializableInstruction"
+                }
+              }
+            }
+          },
+          {
+            "name": "paused",
+            "docs": [
+              "Whether or not the thread is currently paused."
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "rateLimit",
+            "docs": [
+              "The maximum number of execs allowed per slot."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "trigger",
+            "docs": [
+              "The triggering event to kickoff a thread."
+            ],
+            "type": {
+              "defined": {
+                "name": "trigger"
+              }
+            }
           }
-        ];
-      };
+        ]
+      }
     },
     {
-      name: "ClockData";
-      docs: ["Clock Data"];
-      type: {
-        kind: "struct";
-        fields: [
+      "name": "threadSettings",
+      "docs": [
+        "The properties of threads which are updatable."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "slot";
-            docs: ["The Current Slot"];
-            type: "u64";
+            "name": "fee",
+            "type": {
+              "option": "u64"
+            }
           },
           {
-            name: "epoch";
-            docs: ["The Bank Epoch"];
-            type: "u64";
+            "name": "instructions",
+            "type": {
+              "option": {
+                "vec": {
+                  "defined": {
+                    "name": "serializableInstruction"
+                  }
+                }
+              }
+            }
           },
           {
-            name: "unixTimestamp";
-            docs: ["The Current Unix Timestamp"];
-            type: "i64";
+            "name": "name",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "rateLimit",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "trigger",
+            "type": {
+              "option": {
+                "defined": {
+                  "name": "trigger"
+                }
+              }
+            }
           }
-        ];
-      };
+        ]
+      }
     },
     {
-      name: "ExecContext";
-      docs: ["The execution context of a particular transaction thread."];
-      type: {
-        kind: "struct";
-        fields: [
+      "name": "trigger",
+      "docs": [
+        "The triggering conditions of a thread."
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
           {
-            name: "execIndex";
-            docs: ["Index of the next instruction to be executed."];
-            type: "u64";
+            "name": "account",
+            "fields": [
+              {
+                "name": "address",
+                "docs": [
+                  "The address of the account to monitor."
+                ],
+                "type": "pubkey"
+              },
+              {
+                "name": "offset",
+                "docs": [
+                  "The byte offset of the account data to monitor."
+                ],
+                "type": "u64"
+              },
+              {
+                "name": "size",
+                "docs": [
+                  "The size of the byte slice to monitor (must be less than 1kb)"
+                ],
+                "type": "u64"
+              }
+            ]
           },
           {
-            name: "execsSinceReimbursement";
-            docs: ["Number of execs since the last tx reimbursement."];
-            type: "u64";
+            "name": "cron",
+            "fields": [
+              {
+                "name": "schedule",
+                "docs": [
+                  "The schedule in cron syntax. Value must be parsable by the `clockwork_cron` package."
+                ],
+                "type": "string"
+              },
+              {
+                "name": "skippable",
+                "docs": [
+                  "Boolean value indicating whether triggering moments may be skipped if they are missed (e.g. due to network downtime).",
+                  "If false, any \"missed\" triggering moments will simply be executed as soon as the network comes back online."
+                ],
+                "type": "bool"
+              }
+            ]
           },
           {
-            name: "execsSinceSlot";
-            docs: ["Number of execs in this slot."];
-            type: "u64";
+            "name": "now"
           },
           {
-            name: "lastExecAt";
-            docs: ["Slot of the last exec"];
-            type: "u64";
+            "name": "slot",
+            "fields": [
+              {
+                "name": "slot",
+                "type": "u64"
+              }
+            ]
           },
           {
-            name: "triggerContext";
-            docs: ["Context for the triggering condition"];
-            type: {
-              defined: "TriggerContext";
-            };
+            "name": "epoch",
+            "fields": [
+              {
+                "name": "epoch",
+                "type": "u64"
+              }
+            ]
+          },
+          {
+            "name": "timestamp",
+            "fields": [
+              {
+                "name": "unixTs",
+                "type": "i64"
+              }
+            ]
+          },
+          {
+            "name": "pyth",
+            "fields": [
+              {
+                "name": "priceFeed",
+                "docs": [
+                  "The address of the price feed to monitor."
+                ],
+                "type": "pubkey"
+              },
+              {
+                "name": "equality",
+                "docs": [
+                  "The equality operator (gte or lte) used to compare prices."
+                ],
+                "type": {
+                  "defined": {
+                    "name": "equality"
+                  }
+                }
+              },
+              {
+                "name": "limit",
+                "docs": [
+                  "The limit price to compare the Pyth feed to."
+                ],
+                "type": "i64"
+              }
+            ]
           }
-        ];
-      };
+        ]
+      }
     },
     {
-      name: "ThreadSettings";
-      docs: ["The properties of threads which are updatable."];
-      type: {
-        kind: "struct";
-        fields: [
-          {
-            name: "fee";
-            type: {
-              option: "u64";
-            };
-          },
-          {
-            name: "instructions";
-            type: {
-              option: {
-                vec: {
-                  defined: "SerializableInstruction";
-                };
-              };
-            };
-          },
-          {
-            name: "name";
-            type: {
-              option: "string";
-            };
-          },
-          {
-            name: "rateLimit";
-            type: {
-              option: "u64";
-            };
-          },
-          {
-            name: "trigger";
-            type: {
-              option: {
-                defined: "Trigger";
-              };
-            };
-          }
-        ];
-      };
-    },
-    {
-      name: "TriggerContext";
-      docs: [
+      "name": "triggerContext",
+      "docs": [
         "The event which allowed a particular transaction thread to be triggered."
-      ];
-      type: {
-        kind: "enum";
-        variants: [
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
           {
-            name: "Account";
-            fields: [
+            "name": "account",
+            "fields": [
               {
-                name: "data_hash";
-                docs: ["The account's data hash."];
-                type: "u64";
+                "name": "dataHash",
+                "docs": [
+                  "The account's data hash."
+                ],
+                "type": "u64"
               }
-            ];
+            ]
           },
           {
-            name: "Cron";
-            fields: [
+            "name": "cron",
+            "fields": [
               {
-                name: "started_at";
-                docs: ["The threshold moment the schedule was waiting for."];
-                type: "i64";
-              }
-            ];
-          },
-          {
-            name: "Now";
-          },
-          {
-            name: "Slot";
-            fields: [
-              {
-                name: "started_at";
-                docs: ["The threshold slot the schedule was waiting for."];
-                type: "u64";
-              }
-            ];
-          },
-          {
-            name: "Epoch";
-            fields: [
-              {
-                name: "started_at";
-                docs: ["The threshold epoch the schedule was waiting for."];
-                type: "u64";
-              }
-            ];
-          },
-          {
-            name: "Timestamp",
-            fields: [
-              {
-                name: "started_at",
-                docs: [
+                "name": "startedAt",
+                "docs": [
                   "The threshold moment the schedule was waiting for."
                 ],
-                type: "i64"
+                "type": "i64"
               }
             ]
           },
           {
-            name: "Pyth",
-            fields: [
+            "name": "now"
+          },
+          {
+            "name": "slot",
+            "fields": [
               {
-                name: "price",
-                docs: [
-                  "The limit price the trigger was waiting for."
+                "name": "startedAt",
+                "docs": [
+                  "The threshold slot the schedule was waiting for."
                 ],
-                type: "i64"
+                "type": "u64"
+              }
+            ]
+          },
+          {
+            "name": "epoch",
+            "fields": [
+              {
+                "name": "startedAt",
+                "docs": [
+                  "The threshold epoch the schedule was waiting for."
+                ],
+                "type": "u64"
+              }
+            ]
+          },
+          {
+            "name": "timestamp",
+            "fields": [
+              {
+                "name": "startedAt",
+                "docs": [
+                  "The threshold moment the schedule was waiting for."
+                ],
+                "type": "i64"
+              }
+            ]
+          },
+          {
+            "name": "pyth",
+            "fields": [
+              {
+                "name": "price",
+                "type": "i64"
               }
             ]
           }
-        ];
-      };
+        ]
+      }
     },
     {
-      name: "Equality";
-      docs: ["Equality"];
-      type: {
-        kind: "enum";
-        variants: [
+      "name": "worker",
+      "docs": [
+        "worker"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "GreaterThanOrEqual";
+            "name": "authority",
+            "docs": [
+              "The worker's authority (owner)."
+            ],
+            "type": "pubkey"
           },
           {
-            name: "LessThanOrEqual";
+            "name": "commissionBalance",
+            "docs": [
+              "The number of lamports claimable by the authority as commission for running the worker."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "commissionRate",
+            "docs": [
+              "Integer between 0 and 100 determining the percentage of fees worker will keep as commission."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "id",
+            "docs": [
+              "The worker's id."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "signatory",
+            "docs": [
+              "The worker's signatory address (used to sign txs)."
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "totalDelegations",
+            "docs": [
+              "The number delegations allocated to this worker."
+            ],
+            "type": "u64"
           }
-        ];
-      };
-    } 
-  ];
-  errors: [
-    {
-      code: 6000;
-      name: "InvalidThreadResponse";
-      msg: "The exec response could not be parsed";
-    },
-    {
-      code: 6001;
-      name: "InvalidThreadState";
-      msg: "The thread is in an invalid state";
-    },
-    {
-      code: 6002;
-      name: "InvalidTriggerVariant";
-      msg: "The trigger variant cannot be changed";
-    },
-    {
-      code: 6003;
-      name: "TriggerNotActive";
-      msg: "The trigger condition has not been activated";
-    },
-    {
-      code: 6004;
-      name: "ThreadBusy";
-      msg: "This operation cannot be processes because the thread is currently busy";
-    },
-    {
-      code: 6005;
-      name: "ThreadPaused";
-      msg: "The thread is currently paused";
-    },
-    {
-      code: 6006;
-      name: "RateLimitExeceeded";
-      msg: "The thread's rate limit has been reached";
-    },
-    {
-      code: 6007;
-      name: "MaxRateLimitExceeded";
-      msg: "Thread rate limits cannot exceed the maximum allowed value";
-    },
-    {
-      code: 6008;
-      name: "UnauthorizedWrite";
-      msg: "Inner instruction attempted to write to an unauthorized address";
-    },
-    {
-      code: 6009;
-      name: "WithdrawalTooLarge";
-      msg: "Withdrawing this amount would leave the thread with less than the minimum required SOL for rent exemption";
+        ]
+      }
     }
-  ];
-};
-
-export const IDL: ThreadProgram = {
-  version: "2.0.16",
-  name: "thread_program",
-  docs: ["Program for creating transaction threads on Solana."],
-  instructions: [
-    {
-      name: "getCrateInfo",
-      docs: [
-        "Return the crate information via `sol_set_return_data/sol_get_return_data`",
-      ],
-      accounts: [
-        {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
-        },
-      ],
-      args: [],
-      returns: {
-        defined: "CrateInfo",
-      },
-    },
-    {
-      name: "threadExec",
-      docs: ["Executes the next instruction on thread."],
-      accounts: [
-        {
-          name: "fee",
-          isMut: true,
-          isSigner: false,
-          docs: ["The worker's fee account."],
-        },
-        {
-          name: "pool",
-          isMut: false,
-          isSigner: false,
-          docs: ["The active worker pool."],
-        },
-        {
-          name: "signatory",
-          isMut: true,
-          isSigner: true,
-          docs: ["The signatory."],
-        },
-        {
-          name: "thread",
-          isMut: true,
-          isSigner: false,
-          docs: ["The thread to execute."],
-        },
-        {
-          name: "worker",
-          isMut: false,
-          isSigner: false,
-          docs: ["The worker."],
-        },
-      ],
-      args: [],
-    },
-    {
-      name: "threadCreate",
-      docs: ["Creates a new transaction thread."],
-      accounts: [
-        {
-          name: "authority",
-          isMut: false,
-          isSigner: true,
-          docs: ["The authority (owner) of the thread."],
-        },
-        {
-          name: "payer",
-          isMut: true,
-          isSigner: true,
-          docs: ["The payer for account initializations."],
-        },
-        {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
-          docs: ["The Solana system program."],
-        },
-        {
-          name: "thread",
-          isMut: true,
-          isSigner: false,
-          docs: ["The thread to be created."],
-        },
-      ],
-      args: [
-        {
-          name: "amount",
-          type: "u64",
-        },
-        {
-          name: "id",
-          type: "bytes",
-        },
-        {
-          name: "instructions",
-          type: {
-            vec: {
-              defined: "SerializableInstruction",
-            },
-          },
-        },
-        {
-          name: "trigger",
-          type: {
-            defined: "Trigger",
-          },
-        },
-      ],
-    },
-    {
-      name: "threadDelete",
-      docs: [
-        "Closes an existing thread account and returns the lamports to the owner.",
-      ],
-      accounts: [
-        {
-          name: "authority",
-          isMut: false,
-          isSigner: true,
-          docs: ["The authority (owner) of the thread."],
-        },
-        {
-          name: "closeTo",
-          isMut: true,
-          isSigner: false,
-          docs: ["The address to return the data rent lamports to."],
-        },
-        {
-          name: "thread",
-          isMut: true,
-          isSigner: false,
-          docs: ["The thread to be delete."],
-        },
-      ],
-      args: [],
-    },
-    {
-      name: "threadInstructionAdd",
-      docs: ["Appends a new instruction to the thread's instruction set."],
-      accounts: [
-        {
-          name: "authority",
-          isMut: true,
-          isSigner: true,
-          docs: ["The authority (owner) of the thread."],
-        },
-        {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
-          docs: ["The Solana system program"],
-        },
-        {
-          name: "thread",
-          isMut: true,
-          isSigner: false,
-          docs: ["The thread to be paused."],
-        },
-      ],
-      args: [
-        {
-          name: "instruction",
-          type: {
-            defined: "SerializableInstruction",
-          },
-        },
-      ],
-    },
-    {
-      name: "threadInstructionRemove",
-      docs: [
-        "Removes an instruction to the thread's instruction set at the provied index.",
-      ],
-      accounts: [
-        {
-          name: "authority",
-          isMut: false,
-          isSigner: true,
-          docs: ["The authority (owner) of the thread."],
-        },
-        {
-          name: "thread",
-          isMut: true,
-          isSigner: false,
-          docs: ["The thread to be edited."],
-        },
-      ],
-      args: [
-        {
-          name: "index",
-          type: "u64",
-        },
-      ],
-    },
-    {
-      name: "threadKickoff",
-      docs: ["Kicks off a thread if its trigger condition is active."],
-      accounts: [
-        {
-          name: "signatory",
-          isMut: true,
-          isSigner: true,
-          docs: ["The signatory."],
-        },
-        {
-          name: "thread",
-          isMut: true,
-          isSigner: false,
-          docs: ["The thread to kickoff."],
-        },
-        {
-          name: "worker",
-          isMut: false,
-          isSigner: false,
-          docs: ["The worker."],
-        },
-      ],
-      args: [],
-    },
-    {
-      name: "threadPause",
-      docs: ["Pauses an active thread."],
-      accounts: [
-        {
-          name: "authority",
-          isMut: false,
-          isSigner: true,
-          docs: ["The authority (owner) of the thread."],
-        },
-        {
-          name: "thread",
-          isMut: true,
-          isSigner: false,
-          docs: ["The thread to be paused."],
-        },
-      ],
-      args: [],
-    },
-    {
-      name: "threadResume",
-      docs: ["Resumes a paused thread."],
-      accounts: [
-        {
-          name: "authority",
-          isMut: false,
-          isSigner: true,
-          docs: ["The authority (owner) of the thread."],
-        },
-        {
-          name: "thread",
-          isMut: true,
-          isSigner: false,
-          docs: ["The thread to be resumed."],
-        },
-      ],
-      args: [],
-    },
-    {
-      name: "threadReset",
-      docs: ["Resets a thread's next instruction."],
-      accounts: [
-        {
-          name: "authority",
-          isMut: false,
-          isSigner: true,
-          docs: ["The authority (owner) of the thread."],
-        },
-        {
-          name: "thread",
-          isMut: true,
-          isSigner: false,
-          docs: ["The thread to be paused."],
-        },
-      ],
-      args: [],
-    },
-    {
-      name: "threadUpdate",
-      docs: ["Allows an owner to update the mutable properties of a thread."],
-      accounts: [
-        {
-          name: "authority",
-          isMut: true,
-          isSigner: true,
-          docs: ["The authority (owner) of the thread."],
-        },
-        {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
-          docs: ["The Solana system program"],
-        },
-        {
-          name: "thread",
-          isMut: true,
-          isSigner: false,
-          docs: ["The thread to be updated."],
-        },
-      ],
-      args: [
-        {
-          name: "settings",
-          type: {
-            defined: "ThreadSettings",
-          },
-        },
-      ],
-    },
-    {
-      name: "threadWithdraw",
-      docs: ["Allows an owner to withdraw from a thread's lamport balance."],
-      accounts: [
-        {
-          name: "authority",
-          isMut: false,
-          isSigner: true,
-          docs: ["The authority (owner) of the thread."],
-        },
-        {
-          name: "payTo",
-          isMut: true,
-          isSigner: false,
-          docs: ["The account to withdraw lamports to."],
-        },
-        {
-          name: "thread",
-          isMut: true,
-          isSigner: false,
-          docs: ["The thread to be."],
-        },
-      ],
-      args: [
-        {
-          name: "amount",
-          type: "u64",
-        },
-      ],
-    },
-  ],
-  accounts: [
-    {
-      name: "thread",
-      docs: ["Tracks the current state of a transaction thread on Solana."],
-      type: {
-        kind: "struct",
-        fields: [
-          {
-            name: "authority",
-            docs: ["The owner of this thread."],
-            type: "publicKey",
-          },
-          {
-            name: "bump",
-            docs: ["The bump, used for PDA validation."],
-            type: "u8",
-          },
-          {
-            name: "createdAt",
-            docs: ["The cluster clock at the moment the thread was created."],
-            type: {
-              defined: "ClockData",
-            },
-          },
-          {
-            name: "execContext",
-            docs: ["The context of the thread's current execution state."],
-            type: {
-              option: {
-                defined: "ExecContext",
-              },
-            },
-          },
-          {
-            name: "fee",
-            docs: [
-              "The number of lamports to payout to workers per execution.",
-            ],
-            type: "u64",
-          },
-          {
-            name: "id",
-            docs: ["The id of the thread, given by the authority."],
-            type: "bytes",
-          },
-          {
-            name: "instructions",
-            docs: ["The instructions to be executed."],
-            type: {
-              vec: {
-                defined: "SerializableInstruction",
-              },
-            },
-          },
-          {
-            name: "name",
-            docs: ["The name of the thread."],
-            type: "string",
-          },
-          {
-            name: "nextInstruction",
-            docs: ["The next instruction to be executed."],
-            type: {
-              option: {
-                defined: "SerializableInstruction",
-              },
-            },
-          },
-          {
-            name: "paused",
-            docs: ["Whether or not the thread is currently paused."],
-            type: "bool",
-          },
-          {
-            name: "rateLimit",
-            docs: ["The maximum number of execs allowed per slot."],
-            type: "u64",
-          },
-          {
-            name: "trigger",
-            docs: ["The triggering event to kickoff a thread."],
-            type: {
-              defined: "Trigger",
-            },
-          },
-        ],
-      },
-    },
-  ],
-  types: [
-    {
-      name: "Trigger",
-      docs: ["Trigger"],
-      type: {
-        kind: "enum",
-        variants: [
-          {
-            name: "Account",
-            fields: [
-              {
-                name: "address",
-                docs: ["The address of the account to monitor"],
-                type: "publicKey",
-              },
-              {
-                name: "offset",
-                docs: ["The byte offset of the account data to monitor"],
-                type: "u64",
-              },
-              {
-                name: "size",
-                docs: [
-                  "The size of the byte slice to monitor (must be less than 1kb)",
-                ],
-                type: "u64",
-              },
-            ],
-          },
-          {
-            name: "Cron",
-            fields: [
-              {
-                name: "schedule",
-                docs: [
-                  "The schedule in cron syntax. Value must be parsable by the `clockwork_cron` package",
-                ],
-                type: "string",
-              },
-              {
-                name: "skippable",
-                docs: [
-                  "Boolean value indicating whether triggering moments may be skipped if they are missed (e.g. due to network downtime) If false, any missed triggering moments will simply be executed as soon as the network comes back online.",
-                ],
-                type: "bool",
-              },
-            ],
-          },
-          {
-            name: "Now",
-          },
-          {
-            name: "Slot",
-            fields: [
-              {
-                name: "slot",
-                docs: ["Slot"],
-                type: "u64",
-              },
-            ],
-          },
-          {
-            name: "Epoch",
-            fields: [
-              {
-                name: "epoch",
-                docs: ["Epoch"],
-                type: "u64",
-              },
-            ],
-          },
-          {
-            name: "Timestamp",
-            fields: [
-              {
-                name: "unixTs",
-                docs: ["Unix timestamp"],
-                type: "i64",
-              },
-            ],
-          },
-          {
-            name: "Pyth",
-            fields: [
-              {
-                name: "priceFeed",
-                docs: ["The address of the price feed to monitor."],
-                type: "publicKey",
-              },
-              {
-                name: "equality",
-                docs: ["The equality operator (gte or lte) used to compare prices."],
-                type: { defined: "Equality" }
-              },
-              {
-                name: "limit",
-                docs: ["The limit price to compare the Pyth feed to."],
-                type: "i64",
-              },
-            ],
-          }
-        ],
-      },
-    },
-    {
-      name: "SerializableInstruction",
-      docs: ["Serializable Instruction"],
-      type: {
-        kind: "struct",
-        fields: [
-          {
-            name: "programId",
-            docs: [
-              "Pubkey of the instruction processor that executes this instruction",
-            ],
-            type: "publicKey",
-          },
-          {
-            name: "accounts",
-            docs: [
-              "Metadata for what accounts should be passed to the instruction processor",
-            ],
-            type: {
-              vec: { defined: "SerializableAccount" },
-            },
-          },
-          {
-            name: "data",
-            docs: ["Opaque data passed to the instruction processor"],
-            type: "bytes",
-          },
-        ],
-      },
-    },
-    {
-      name: "SerializableAccount",
-      docs: ["Serializable Account"],
-      type: {
-        kind: "struct",
-        fields: [
-          {
-            name: "pubkey",
-            docs: ["An account's public key"],
-            type: "publicKey",
-          },
-          {
-            name: "isSigner",
-            docs: [
-              "True if an Instruction requires a Transaction signature matching `pubkey`",
-            ],
-            type: "bool",
-          },
-          {
-            name: "isWritable",
-            docs: [
-              "True if the `pubkey` can be loaded as a read-write account",
-            ],
-            type: "bool",
-          },
-        ],
-      },
-    },
-    {
-      name: "ClockData",
-      docs: ["Clock Data"],
-      type: {
-        kind: "struct",
-        fields: [
-          {
-            name: "slot",
-            docs: ["The Current Slot"],
-            type: "u64",
-          },
-          {
-            name: "epoch",
-            docs: ["The Bank Epoch"],
-            type: "u64",
-          },
-          {
-            name: "unixTimestamp",
-            docs: ["The Current Unix Timestamp"],
-            type: "i64",
-          },
-        ],
-      },
-    },
-    {
-      name: "ExecContext",
-      docs: ["The execution context of a particular transaction thread."],
-      type: {
-        kind: "struct",
-        fields: [
-          {
-            name: "execIndex",
-            docs: ["Index of the next instruction to be executed."],
-            type: "u64",
-          },
-          {
-            name: "execsSinceReimbursement",
-            docs: ["Number of execs since the last tx reimbursement."],
-            type: "u64",
-          },
-          {
-            name: "execsSinceSlot",
-            docs: ["Number of execs in this slot."],
-            type: "u64",
-          },
-          {
-            name: "lastExecAt",
-            docs: ["Slot of the last exec"],
-            type: "u64",
-          },
-          {
-            name: "triggerContext",
-            docs: ["Context for the triggering condition"],
-            type: {
-              defined: "TriggerContext",
-            },
-          },
-        ],
-      },
-    },
-    {
-      name: "ThreadSettings",
-      docs: ["The properties of threads which are updatable."],
-      type: {
-        kind: "struct",
-        fields: [
-          {
-            name: "fee",
-            type: {
-              option: "u64",
-            },
-          },
-          {
-            name: "instructions",
-            type: {
-              option: {
-                vec: {
-                  defined: "SerializableInstruction",
-                },
-              },
-            },
-          },
-          {
-            name: "name",
-            type: {
-              option: "string",
-            },
-          },
-          {
-            name: "rateLimit",
-            type: {
-              option: "u64",
-            },
-          },
-          {
-            name: "trigger",
-            type: {
-              option: {
-                defined: "Trigger",
-              },
-            },
-          },
-        ],
-      },
-    },
-    {
-      name: "TriggerContext",
-      docs: [
-        "The event which allowed a particular transaction thread to be triggered.",
-      ],
-      type: {
-        kind: "enum",
-        variants: [
-          {
-            name: "Account",
-            fields: [
-              {
-                name: "data_hash",
-                docs: ["The account's data hash."],
-                type: "u64",
-              },
-            ],
-          },
-          {
-            name: "Cron",
-            fields: [
-              {
-                name: "started_at",
-                docs: ["The threshold moment the schedule was waiting for."],
-                type: "i64",
-              },
-            ],
-          },
-          {
-            name: "Now",
-          },
-          {
-            name: "Slot",
-            fields: [
-              {
-                name: "started_at",
-                docs: ["The threshold slot the schedule was waiting for."],
-                type: "u64",
-              },
-            ],
-          },
-          {
-            name: "Epoch",
-            fields: [
-              {
-                name: "started_at",
-                docs: ["The threshold epoch the schedule was waiting for."],
-                type: "u64",
-              },
-            ],
-          },
-          {
-            name: "Timestamp",
-            fields: [
-              {
-                name: "started_at",
-                docs: [
-                  "The threshold moment the schedule was waiting for."
-                ],
-                type: "i64"
-              }
-            ]
-          },
-          {
-            name: "Pyth",
-            fields: [
-              {
-                name: "price",
-                docs: [
-                  "The limit price the trigger was waiting for."
-                ],
-                type: "i64"
-              }
-            ]
-          }
-        ],
-      },
-    },
-    {
-      name: "Equality",
-      docs: ["Equality"],
-      type: {
-        kind: "enum",
-        variants: [
-          {
-            name: "GreaterThanOrEqual"
-          },
-          {
-            name: "LessThanOrEqual"
-          },
-        ],
-      },
-    },
-  ],
-  errors: [
-    {
-      code: 6000,
-      name: "InvalidThreadResponse",
-      msg: "The exec response could not be parsed",
-    },
-    {
-      code: 6001,
-      name: "InvalidThreadState",
-      msg: "The thread is in an invalid state",
-    },
-    {
-      code: 6002,
-      name: "InvalidTriggerVariant",
-      msg: "The trigger variant cannot be changed",
-    },
-    {
-      code: 6003,
-      name: "TriggerNotActive",
-      msg: "The trigger condition has not been activated",
-    },
-    {
-      code: 6004,
-      name: "ThreadBusy",
-      msg: "This operation cannot be processes because the thread is currently busy",
-    },
-    {
-      code: 6005,
-      name: "ThreadPaused",
-      msg: "The thread is currently paused",
-    },
-    {
-      code: 6006,
-      name: "RateLimitExeceeded",
-      msg: "The thread's rate limit has been reached",
-    },
-    {
-      code: 6007,
-      name: "MaxRateLimitExceeded",
-      msg: "Thread rate limits cannot exceed the maximum allowed value",
-    },
-    {
-      code: 6008,
-      name: "UnauthorizedWrite",
-      msg: "Inner instruction attempted to write to an unauthorized address",
-    },
-    {
-      code: 6009,
-      name: "WithdrawalTooLarge",
-      msg: "Withdrawing this amount would leave the thread with less than the minimum required SOL for rent exemption",
-    },
-  ],
+  ]
 };
